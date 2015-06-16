@@ -17,7 +17,7 @@ namespace SharpRL.Examples.TicTacToe
 		public static void Run()
 		{
 			int trainingEpisodes = 100000;
-			var environment = new BoardEnvironment(new Configuration(trainingEpisodes));
+			var environment = new BoardEnvironment(new Configuration(trainingEpisodes, new Random(1337)));
 
 			var agent = new BoardAgent(BoardTileType.Cross);
 			environment.AddAgent(agent);
@@ -33,7 +33,7 @@ namespace SharpRL.Examples.TicTacToe
 			environment.ResetScores();
 			agent.Learner.FollowPolicy = true;
 
-			int gameEpisodes = 200;
+			int gameEpisodes = 300;
 			Simulate(environment, gameEpisodes);
 
 			Func<int, double> winRaito = wins => ((double)wins / gameEpisodes) * 100;

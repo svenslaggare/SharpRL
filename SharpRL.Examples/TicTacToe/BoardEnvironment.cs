@@ -215,6 +215,7 @@ namespace SharpRL.Examples.TicTacToe
 			{
 				var actionPosition = this.GetMove(actionNumber);
 				GameWinner? winner = null;
+				bool madeInvalidMode = false;
 
 				if (!this.board.Move(actionPosition.X, actionPosition.Y, agent.PlacementTile))
 				{
@@ -224,6 +225,7 @@ namespace SharpRL.Examples.TicTacToe
 					if (randPosition != null)
 					{
 						this.board.Move(randPosition.Value.X, randPosition.Value.Y, agent.PlacementTile);
+						madeInvalidMode = true;
 					}
 				}
 
@@ -248,7 +250,11 @@ namespace SharpRL.Examples.TicTacToe
 
 				//Update the state
 				agent.State = new BoardState(this.board);
-				agent.Reward(this.CalculateReward(winner, agent), winner.HasValue, episode);
+
+				if (!madeInvalidMode)
+				{
+					agent.Reward(this.CalculateReward(winner, agent), winner.HasValue, episode);
+				}
 
 				if (winner != null)
 				{
